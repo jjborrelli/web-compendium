@@ -1,0 +1,172 @@
+---
+title: "Food Web Database"
+output:
+  html_document:
+    toc: yes
+---
+
+# THE FOOD WEB "BEASTIARY"  
+
+```{r directory, echo = F, message = F}
+setwd("C:/Users/borre_000/Dropbox/Beastiary")
+
+linkpath <- "C:/Users/borre_000/Dropbox/Beastiary/Links/"
+nodepath <- "C:/Users/borre_000/Dropbox/Beastiary/Nodes/"
+```
+
+```{r dependencies}
+require(igraph)
+```
+
+
+
+## Food webs from Ecological Archives  
+### Quick Pond  
+**Ecological Archives E093-153-D1**
+  
+Citation:   
+[Daniel L. Preston, Sarah A. Orlofske, John P. McLaughlin, and Pieter T. J. Johnson. 2012. Food web including infectious agents for a California freshwater pond. Ecology 93:1760.](http://dx.doi.org/10.1890/11-2194.1)
+
+```{r quickdata}
+quick.nodes <- read.csv(paste(nodepath, "Quick_Pond_Nodes.csv", sep = ""), header = T)
+quick.links <- read.csv(paste(linkpath, "Quick_Pond_Links.csv", sep = ""), header = T)
+```
+
+
+### Sylt Tidal Basin
+**Ecological Archives E092-172-D1**  
+  
+Citation:  
+[David W. Thieltges, Karsten Reise, Kim N. Mouritsen, John P. McLaughlin, and Robert Poulin. 2011. Food web including metazoan parasites for a tidal basin in Germany and Denmark. Ecology 92:2005.](http://esapubs.org/archive/ecol/E092/172/)
+
+```{r syltdata}
+sylt.nodes <- read.csv(paste(nodepath, "Sylt_Data_Nodes.csv", sep = ""), header = T)
+sylt.links <- read.csv(paste(linkpath, "Sylt_Data_Links.csv", sep = ""), header = T)
+```
+
+### Otago Harbour    
+**Ecological Archives E092-173-D1**  
+
+Citation:    
+[Kim N. Mouritsen, Robert Poulin, John P. McLaughlin and David W. Thieltges. 2011. Food web including metazoan parasites for an intertidal ecosystem in New Zealand. Ecology 92:2006](http://esapubs.org/archive/ecol/E092/173/)
+
+```{r otagodata}
+otago.nodes <- read.csv(paste(nodepath, "Otago_Data_Nodes.csv", sep = ""), header = T)
+otago.links <- read.csv(paste(linkpath, "Otago_Data_Links.csv", sep = ""), header = T)
+```
+
+### Flensburg Fjord  
+**Ecological Archives E092-174-D1**   
+
+Citation:    
+[C. Dieter Zander, Neri Josten, Kim C. Detloff, Robert Poulin, John P. McLaughlin, and David W. Thieltges. 2011. Food web including metazoan parasites for a brackish shallow water ecosystem in Germany and Denmark. Ecology 92:2007](http://esapubs.ord/archive/ecol/E092/174/)
+
+```{r flensdata}
+flens.nodes <- read.csv(paste(nodepath, "Flensburg_Data_Nodes.csv", sep = ""), header = T)
+flens.links <- read.csv(paste(linkpath, "Flensburg_Data_Links.csv", sep = ""), header = T)
+```
+
+### Carpinteria Salt Marsh  
+**Ecological Archives E092-066-D1**  
+
+Citation:    
+[Ryan F. Hechinger, Kevin D. Lafferty, John P. McLaughlin, Brian L. Fredensborg, Todd C. Huspeni, Julio Lorda, Parwant K. Sandhu, Jenny C. Shaw, Mark E. Torchin, Kathleen L. Whitney, and Armand M. Kuris. 2011. Food webs including parasites, biomass, body sizes, and life stages for three California/Baja California estuaries. Ecology 92:791](http://esapubs.org/archive/ecol/E092/066/)
+
+```{r}
+csm.nodes <- read.csv(paste(nodepath, "CSMweb_Nodes.csv", sep = ""), header = T)
+csm.links <- read.csv(paste(linkpath, "CSMweb_Links.csv", sep = ""), header = T)
+```
+
+### Estero de Punta Banda  
+**Ecological Archives E092-066-D1**  
+
+Citation:    
+[Ryan F. Hechinger, Kevin D. Lafferty, John P. McLaughlin, Brian L. Fredensborg, Todd C. Huspeni, Julio Lorda, Parwant K. Sandhu, Jenny C. Shaw, Mark E. Torchin, Kathleen L. Whitney, and Armand M. Kuris. 2011. Food webs including parasites, biomass, body sizes, and life stages for three California/Baja California estuaries. Ecology 92:791](http://esapubs.org/archive/ecol/E092/066/)
+
+```{r}
+epb.nodes <- read.csv(paste(nodepath, "EPBweb_Nodes.csv", sep = ""), header = T)
+epb.links <- read.csv(paste(linkpath, "EPBweb_Links.csv", sep = ""), header = T)
+```
+
+### Bahia Falsa in Bahia San Quintín  
+**Ecological Archives E092-066-D1**  
+
+Citation:  
+[Ryan F. Hechinger, Kevin D. Lafferty, John P. McLaughlin, Brian L. Fredensborg, Todd C. Huspeni, Julio Lorda, Parwant K. Sandhu, Jenny C. Shaw, Mark E. Torchin, Kathleen L. Whitney, and Armand M. Kuris. 2011. Food webs including parasites, biomass, body sizes, and life stages for three California/Baja California estuaries. Ecology 92:791](http://esapubs.org/archive/ecol/E092/066/)
+
+```{r}
+bsq.nodes <- read.csv(paste(nodepath, "BSQweb_Nodes.csv", sep = ""), header = T)
+bsq.links <- read.csv(paste(linkpath, "BSQweb_Links.csv", sep = ""), header = T)
+```
+
+## Food webs from the Interaction Web Database
+
+Data Location: http://www.nceas.ucsb.edu/interactionweb/html/thomps_towns.html  
+
+Sources:  
+[Jaarsma, N.G., de Boer, S.M., Townsend, C.R., Thompson, R.M. and Edwards, E.D. 1998. Characterising food webs in two New Zealand streams. New Zealand Journal of Marine and Freshwater Research 32: 271-286.](http://www.tandfonline.com/doi/abs/10.1080/00288330.1998.9516825#.U8kZaPmSyCk)
+
+[Thompson, R.M., Edwards, E.D., McIntosh, A.R. and Townsend, C.R. 2001. Allocation of effort in stream food web studies - the best compromise? Marine and Freshwater Research 52/3: 339-345.](http://www.publish.csiro.au/?paper=MF00041)
+
+[Thompson, R.M. and Townsend, C.R. 1999. The effect of seasonal variation on the community structure and food-web attributes of two streams : implications for food-web science. Oikos 87: 75-88.](http://www.jstor.org/discover/10.2307/3546998?uid=3737760&uid=2&uid=4&sid=21103989791071)
+
+[Thompson, R.M. and Townsend, C.R. 2000. Is resolution the solution? the effect of taxonomic resolution on the calculated properties of three stream food webs. Freshwater Biology 43: 1-10.](http://onlinelibrary.wiley.com/doi/10.1046/j.1365-2427.2000.00579.x/abstract?deniedAccessCustomisedMessage=&userIsAuthenticated=false)
+
+[Thompson, R.M. and Townsend, C.R. 2003. Impacts on stream food webs of native and exotic forest: an intercontinental comparison. Ecology 84: 145-161.](http://www.esajournals.org/doi/abs/10.1890/0012-9658(2003)084%5B0145:IOSFWO%5D2.0.CO%3B2)
+
+[Thompson, R.M. and Townsend, C.R. 2005. Energy availability, spatial heterogeneity and ecosystem size predict food-web structure in streams. Oikos.](http://onlinelibrary.wiley.com/doi/10.1111/j.0030-1299.2005.11600.x/abstract)
+
+[Townsend, C.R., Thompson, R.M., McIntosh, A.R., Kilroy, C., Edwards, E.D. and Scarsbrook, M.R. 1998. Disturbance, resource supply and food-web architecture in streams. Ecology Letters 1: 200-209.](http://onlinelibrary.wiley.com/doi/10.1046/j.1461-0248.1998.00039.x/abstract)
+
+### Akatore
+#### A  
+#### B  
+
+### Catlins
+
+### Berwick
+
+### Venlaw
+
+### Narrowdale
+
+### Blackrock  
+
+### Broad
+
+### Canton
+
+### Dempsters
+#### Summer
+#### Autumn
+#### Spring
+
+### German
+
+### Healy  
+
+### LilKyeburn
+
+### Stony
+
+### Sutton
+#### Summer
+#### Autumn
+#### Spring
+
+### Kyeburn
+
+### NorthCol
+
+### Powder
+
+### Troy
+
+### Martins  
+
+### Coweeta17
+
+### Coweeta1
+
+
+## Food webs from the PEaCE Lab
