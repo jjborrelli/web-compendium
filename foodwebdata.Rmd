@@ -4,6 +4,11 @@ output:
   html_document:
     toc: yes
 ---
+```{r settings, include = F}
+require(knitr)
+opts_chunk$set(message = F, comment = NA)
+```
+
 
 # THE FOOD WEB "BEASTIARY"  
 
@@ -32,6 +37,24 @@ quick.nodes <- read.csv(paste(nodepath, "Quick_Pond_Nodes.csv", sep = ""), heade
 quick.links <- read.csv(paste(linkpath, "Quick_Pond_Links.csv", sep = ""), header = T)
 ```
 
+Separating the non-parasite from the parasite included web.  
+
+```{r}
+para.types <- which(quick.links["LinkType"] == levels(quick.links$LinkType)[c(2,4,5,6,7,9,10,11,12)])
+
+quick.par.e <- as.matrix(quick.links[,2:1])
+quick.nopar.e <- as.matrix(quick.links[-para.types, 2:1])
+```
+
+Using names instead of node ids
+
+```{r}
+quick.df.par <- data.frame(Resource = quick.nodes$WorkingName[quick.par.e[,1]], Consumer = quick.nodes$WorkingName[quick.par.e[,2]])
+quick.df.nopar <- data.frame(Resource = quick.nodes$WorkingName[quick.nopar.e[,1]], Consumer = quick.nodes$WorkingName[quick.nopar.e[,2]])
+```
+
+
+
 
 ### Sylt Tidal Basin
 **Ecological Archives E092-172-D1**  
@@ -44,6 +67,17 @@ sylt.nodes <- read.csv(paste(nodepath, "Sylt_Data_Nodes.csv", sep = ""), header 
 sylt.links <- read.csv(paste(linkpath, "Sylt_Data_Links.csv", sep = ""), header = T)
 ```
 
+```{r}
+para.types <- which(sylt.links["LinkType"] == levels(sylt.links$LinkType)[c(2,4,5,6,7,9,10,11)])
+
+sylt.par.e <- as.matrix(sylt.links[,2:1])
+sylt.nopar.e <- as.matrix(sylt.links[-para.types, 2:1])
+```
+
+```{r}
+sylt.df.par <- data.frame(Resource = sylt.nodes$WorkingName[sylt.par.e[,1]], Consumer = sylt.nodes$WorkingName[sylt.par.e[,2]])
+sylt.df.nopar <- data.frame(Resource = sylt.nodes$WorkingName[sylt.nopar.e[,1]], Consumer = sylt.nodes$WorkingName[sylt.nopar.e[,2]])
+```
 ### Otago Harbour    
 **Ecological Archives E092-173-D1**  
 
@@ -53,6 +87,18 @@ Citation:
 ```{r otagodata}
 otago.nodes <- read.csv(paste(nodepath, "Otago_Data_Nodes.csv", sep = ""), header = T)
 otago.links <- read.csv(paste(linkpath, "Otago_Data_Links.csv", sep = ""), header = T)
+```
+
+```{r}
+para.types <- which(otago.links["LinkType"] == levels(otago.links$LinkType)[c(2,4,5,7,8,9,10)])
+
+otago.par.e <- as.matrix(otago.links[,2:1])
+otago.nopar.e <- as.matrix(otago.links[-para.types, 2:1])
+```
+
+```{r}
+otago.df.par <- data.frame(Resource = otago.nodes$WorkingName[otago.par.e[,1]], Consumer = otago.nodes$WorkingName[otago.par.e[,2]])
+otago.df.nopar <- data.frame(Resource = otago.nodes$WorkingName[otago.nopar.e[,1]], Consumer = otago.nodes$WorkingName[otago.nopar.e[,2]])
 ```
 
 ### Flensburg Fjord  
@@ -66,6 +112,19 @@ flens.nodes <- read.csv(paste(nodepath, "Flensburg_Data_Nodes.csv", sep = ""), h
 flens.links <- read.csv(paste(linkpath, "Flensburg_Data_Links.csv", sep = ""), header = T)
 ```
 
+```{r}
+para.types <- which(flens.links["LinkType"] == levels(flens.links$LinkType)[c(1,3,5,6,7,9,10,11)])
+
+flens.par.e <- as.matrix(flens.links[,2:1])
+flens.nopar.e <- as.matrix(flens.links[-para.types, 2:1])
+```
+
+```{r}
+flens.df.par <- data.frame(Resource = flens.nodes$WorkingName[flens.par.e[,1]], Consumer = flens.nodes$WorkingName[flens.par.e[,2]])
+flens.df.nopar <- data.frame(Resource = flens.nodes$WorkingName[flens.nopar.e[,1]], Consumer = flens.nodes$WorkingName[flens.nopar.e[,2]])
+```
+
+
 ### Carpinteria Salt Marsh  
 **Ecological Archives E092-066-D1**  
 
@@ -75,6 +134,18 @@ Citation:
 ```{r}
 csm.nodes <- read.csv(paste(nodepath, "CSMweb_Nodes.csv", sep = ""), header = T)
 csm.links <- read.csv(paste(linkpath, "CSMweb_Links.csv", sep = ""), header = T)
+```
+
+```{r}
+para.types <- which(csm.links["LinkType"] == levels(csm.links$LinkType)[c(2,4,6,7,8,9,11,12,13)])
+
+csm.par.e <- as.matrix(csm.links[,6:5])
+csm.nopar.e <- as.matrix(csm.links[-para.types, 6:5])
+```
+
+```{r}
+csm.df.par <- data.frame(Resource = csm.nodes$WorkingName[csm.par.e[,1]], Consumer = csm.nodes$WorkingName[csm.par.e[,2]])
+csm.df.nopar <- data.frame(Resource = csm.nodes$WorkingName[csm.nopar.e[,1]], Consumer = csm.nodes$WorkingName[csm.nopar.e[,2]])
 ```
 
 ### Estero de Punta Banda  
@@ -88,6 +159,18 @@ epb.nodes <- read.csv(paste(nodepath, "EPBweb_Nodes.csv", sep = ""), header = T)
 epb.links <- read.csv(paste(linkpath, "EPBweb_Links.csv", sep = ""), header = T)
 ```
 
+```{r}
+para.types <- which(epb.links["LinkType"] == levels(epb.links$LinkType)[c(1,2,4,5,6,8)])
+
+epb.par.e <- as.matrix(epb.links[,6:5])
+epb.nopar.e <- as.matrix(epb.links[-para.types, 6:5])
+```
+
+```{r}
+epb.df.par <- data.frame(Resource = epb.nodes$WorkingName[epb.par.e[,1]], Consumer = epb.nodes$WorkingName[epb.par.e[,2]])
+epb.df.nopar <- data.frame(Resource = epb.nodes$WorkingName[epb.nopar.e[,1]], Consumer = epb.nodes$WorkingName[epb.nopar.e[,2]])
+```
+
 ### Bahia Falsa in Bahia San Quintín  
 **Ecological Archives E092-066-D1**  
 
@@ -97,6 +180,18 @@ Citation:
 ```{r}
 bsq.nodes <- read.csv(paste(nodepath, "BSQweb_Nodes.csv", sep = ""), header = T)
 bsq.links <- read.csv(paste(linkpath, "BSQweb_Links.csv", sep = ""), header = T)
+```
+
+```{r}
+para.types <- which(bsq.links["LinkType"] == levels(bsq.links$LinkType)[c(1,2,4,5,6,8)])
+
+bsq.par.e <- as.matrix(bsq.links[,6:5])
+bsq.nopar.e <- as.matrix(bsq.links[-para.types, 6:5])
+```
+
+```{r}
+bsq.df.par <- data.frame(Resource = bsq.nodes$WorkingName[bsq.par.e[,1]], Consumer = bsq.nodes$WorkingName[bsq.par.e[,2]])
+bsq.df.nopar <- data.frame(Resource = bsq.nodes$WorkingName[bsq.nopar.e[,1]], Consumer = bsq.nodes$WorkingName[bsq.nopar.e[,2]])
 ```
 
 ## Food webs from the Interaction Web Database
@@ -170,3 +265,52 @@ Sources:
 
 
 ## Food webs from the PEaCE Lab
+
+
+## All
+
+```{r eval = F}
+elist1 <- list(otago.nopar.e, sylt.nopar.e, quick.nopar.e, flens.nopar.e, csm.nopar.e, bsq.nopar.e, epb.nopar.e)
+
+wnames <- c("otago", "sylt", "quick", "flens", "csm", "bsq", "epb")
+
+for(i in 1:7){
+  write.csv(elist1[[i]], paste("np", wnames[i], "edgelist.csv", sep = "_"))
+}
+
+glist1 <- lapply(elist1, graph.edgelist)
+
+alist1 <- lapply(glist1, get.adjacency, sparse = F)
+```
+
+
+<table>
+  <tr>
+    <td></td>
+  </tr>
+    
+  <tr>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td></td>
+  </tr>
+    
+  <tr>
+    <td></td>
+  </tr>
+</table>
+
