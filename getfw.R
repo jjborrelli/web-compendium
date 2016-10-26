@@ -44,4 +44,4 @@ for(i in 1:length(web)){
 
 allg <- lapply(alledges, graph.edgelist)
 allmat <- lapply(allg, get.adjacency, sparse = F)
-
+sort(table(tolower(unlist(lapply(allmat, colnames)))), decreasing= T)[1:5]
